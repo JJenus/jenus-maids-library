@@ -1,5 +1,6 @@
 package com.maids.LMS.patron;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +35,14 @@ public class PatronController {
 
     // POST /api/patrons
     @PostMapping
-    public ResponseEntity<Patron> addPatron(@RequestBody Patron patron) {
+    public ResponseEntity<Patron> addPatron(@Valid @RequestBody Patron patron) {
         Patron savedPatron = patronService.addPatron(patron);
         return new ResponseEntity<>(savedPatron, HttpStatus.CREATED);
     }
 
     // PUT /api/patrons/{id}
     @PutMapping("/{id}")
-    public ResponseEntity<Patron> updatePatron(@PathVariable Long id, @RequestBody Patron patron) {
+    public ResponseEntity<Patron> updatePatron(@PathVariable Long id, @Valid @RequestBody Patron patron) {
         Patron updatedPatron = patronService.updatePatron(id, patron);
         if (updatedPatron != null) {
             return new ResponseEntity<>(updatedPatron, HttpStatus.OK);
@@ -54,6 +55,6 @@ public class PatronController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePatron(@PathVariable Long id) {
         patronService.deletePatron(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

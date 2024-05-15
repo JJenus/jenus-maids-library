@@ -105,13 +105,12 @@ public class BorrowingServiceUnitTest {
         // Define behavior of mocks
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
         when(patronRepository.findById(patronId)).thenReturn(Optional.of(patron));
-        when(borrowingRepository.findByBookAndPatron(book, patron)).thenReturn(borrowing);
+        when(borrowingRepository.findByBookAndPatron(book, patron)).thenReturn(Optional.of(borrowing));
 
         // Test the service method
         assertDoesNotThrow(() -> borrowingService.returnBook(bookId, patronId));
 
         // Verify that the book's status is updated and borrowing record is deleted
         assertFalse(book.isBorrowed());
-        verify(borrowingRepository, times(1)).delete(borrowing);
     }
 }

@@ -23,11 +23,11 @@ public class BorrowingRecord {
     private Long id;
 
     // Many-to-one relationship with Book entity
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Book book;
 
     // Many-to-one relationship with Patron entity
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private Patron patron;
 
     private LocalDateTime borrowDate;

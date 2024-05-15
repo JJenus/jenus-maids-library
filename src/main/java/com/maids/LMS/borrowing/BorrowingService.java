@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.time.LocalDateTime;
+
 @Service
 public class BorrowingService {
 
@@ -22,15 +24,12 @@ public class BorrowingService {
     private PatronRepository patronRepository;
 
     public BorrowingRecord borrowBook(Long bookId, Long patronId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        Patron patron = patronRepository.findById(patronId).orElse(null);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found"));
+        Patron patron = patronRepository.findById(patronId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found"));
 
-        if (book == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found");
-        }
-        if (patron == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found");
-        }
+
         if (book.isBorrowed()) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Book is already borrowed");
         }
@@ -43,21 +42,21 @@ public class BorrowingService {
     }
 
     public void returnBook(Long bookId, Long patronId) {
-        Book book = bookRepository.findById(bookId).orElse(null);
-        Patron patron = patronRepository.findById(patronId).orElse(null);
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found"));
+        Patron patron = patronRepository.findById(patronId)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found"));
 
-        if (book == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found");
-        }
-        if (patron == null) {
-            throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found");
-        }
         if (!book.isBorrowed()) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Book is not borrowed");
         }
 
-        BorrowingRecord borrowing = borrowingRepository.findByBookAndPatron(book, patron);
-        borrowingRepository.delete(borrowing);
+        BorrowingRecord borrowingRecord = borrowingRepository.findByBookAndPatron(book, patron)
+                .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Borrowing record not found"));
+
+        borrowingRecord.setReturnDate(LocalDateTime.now());
+        borrowingRepository.save(borrowingRecord);
+
         book.setBorrowed(false);
         bookRepository.save(book);
     }

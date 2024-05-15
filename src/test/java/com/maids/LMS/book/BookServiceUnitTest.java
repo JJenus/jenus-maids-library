@@ -5,6 +5,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Arrays;
 import java.util.List;
@@ -15,10 +17,13 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceUnitTest {
+
     @Mock
     private BookRepository bookRepository;
+
     @InjectMocks
     private BookService bookService;
+
     private final Long id = 1L;
 
     @Test
@@ -57,16 +62,16 @@ public class BookServiceUnitTest {
 
     @Test
     public void testGetBookByIdNotFound() {
-        // Mock data
-
         // Define behavior of mock
         when(bookRepository.findById(id)).thenReturn(Optional.empty());
 
         // Test the service method
-        Book result = bookService.getBookById(id);
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> {
+            bookService.getBookById(id);
+        });
 
         // Assertions
-        assertNull(result);
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     @Test
@@ -90,18 +95,18 @@ public class BookServiceUnitTest {
     public void testUpdateBookSuccess() {
         // Mock data
         Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
-        Book savedBook = new Book(id, "Problem Solving C++", "Walter Savitch", 1998, "ISBN 89784038", false);
+        Book updatedBook = new Book(id, "Problem Solving C++", "Walter Savitch", 1998, "ISBN 89784038", false);
 
         // Define behavior of mock
         when(bookRepository.existsById(id)).thenReturn(true);
-        when(bookRepository.save(bookToUpdate)).thenReturn(savedBook);
+        when(bookRepository.save(bookToUpdate)).thenReturn(updatedBook);
 
         // Test the service method
         Book result = bookService.updateBook(id, bookToUpdate);
 
         // Assertions
         assertNotNull(result);
-        assertEquals(savedBook.getId(), result.getId());
+        assertEquals(updatedBook.getId(), result.getId());
     }
 
     @Test
@@ -111,11 +116,14 @@ public class BookServiceUnitTest {
 
         // Define behavior of mock
         when(bookRepository.existsById(id)).thenReturn(false);
+
         // Test the service method
-        Book result = bookService.updateBook(id, bookToUpdate);
+        HttpClientErrorException exception = assertThrows(HttpClientErrorException.class, () -> {
+            bookService.updateBook(id, bookToUpdate);
+        });
 
         // Assertions
-        assertNull(result);
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatusCode());
     }
 
     @Test
@@ -123,6 +131,7 @@ public class BookServiceUnitTest {
         // Mock data
         Long id = 1L;
         doNothing().when(bookRepository).deleteById(id);
+
         // Test the service method
         bookService.deleteBook(id);
 

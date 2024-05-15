@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -16,8 +15,7 @@ public class BookService {
     }
 
     public Book getBookById(Long id) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        return optionalBook.orElse(null);
+        return bookRepository.findById(id).orElse(null);
     }
 
     public Book addBook(Book book) {
@@ -25,8 +23,7 @@ public class BookService {
     }
 
     public Book updateBook(Long id, Book updatedBook) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if (optionalBook.isPresent()) {
+        if (bookRepository.existsById(id)) {
             updatedBook.setId(id);
             return bookRepository.save(updatedBook);
         } else {

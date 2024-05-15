@@ -93,7 +93,7 @@ public class BookServiceUnitTest {
         Book savedBook = new Book(id, "Problem Solving C++", "Walter Savitch", 1998, "ISBN 89784038");
 
         // Define behavior of mock
-        when(bookRepository.findById(id)).thenReturn(Optional.of(savedBook));
+        when(bookRepository.existsById(id)).thenReturn(true);
         when(bookRepository.save(bookToUpdate)).thenReturn(savedBook);
 
         // Test the service method
@@ -110,7 +110,7 @@ public class BookServiceUnitTest {
         Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
 
         // Define behavior of mock
-        when(bookRepository.findById(id)).thenReturn(Optional.empty());
+        when(bookRepository.existsById(id)).thenReturn(false);
         // Test the service method
         Book result = bookService.updateBook(id, bookToUpdate);
 

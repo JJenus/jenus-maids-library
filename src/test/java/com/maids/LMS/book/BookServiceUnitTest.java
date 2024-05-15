@@ -25,8 +25,8 @@ public class BookServiceUnitTest {
     public void testGetAllBooks() {
         // Mock data
         List<Book> books = Arrays.asList(
-                new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038"),
-                new Book(2L, "Problem Solving C++", "Walter Savitch", 1997, "ISBN 89784038")
+                new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false),
+                new Book(2L, "Problem Solving C++", "Walter Savitch", 1997, "ISBN 89784038", false)
         );
 
         // Define behavior of mock
@@ -42,7 +42,7 @@ public class BookServiceUnitTest {
     @Test
     public void testGetBookByIdSuccess() {
         // Mock data
-        Book book = new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
+        Book book = new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
 
         // Define behavior of mock
         when(bookRepository.findById(id)).thenReturn(Optional.of(book));
@@ -72,8 +72,8 @@ public class BookServiceUnitTest {
     @Test
     public void testSaveBook() {
         // Mock data
-        Book bookToSave = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
-        Book savedBook = new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
+        Book bookToSave = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
+        Book savedBook = new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
 
         // Define behavior of mock
         when(bookRepository.save(bookToSave)).thenReturn(savedBook);
@@ -89,8 +89,8 @@ public class BookServiceUnitTest {
     @Test
     public void testUpdateBookSuccess() {
         // Mock data
-        Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
-        Book savedBook = new Book(id, "Problem Solving C++", "Walter Savitch", 1998, "ISBN 89784038");
+        Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
+        Book savedBook = new Book(id, "Problem Solving C++", "Walter Savitch", 1998, "ISBN 89784038", false);
 
         // Define behavior of mock
         when(bookRepository.existsById(id)).thenReturn(true);
@@ -107,7 +107,7 @@ public class BookServiceUnitTest {
     @Test
     public void testUpdateBookFailed() {
         // Mock data
-        Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038");
+        Book bookToUpdate = new Book(null, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", false);
 
         // Define behavior of mock
         when(bookRepository.existsById(id)).thenReturn(false);

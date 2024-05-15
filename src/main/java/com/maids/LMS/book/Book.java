@@ -34,4 +34,6 @@ public class Book {
     @NotBlank
     @Length(max = 255)
     private String isbn;
+    @NotNull
+    private boolean borrowed;
 }

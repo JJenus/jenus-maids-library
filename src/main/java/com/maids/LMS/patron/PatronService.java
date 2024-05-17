@@ -1,5 +1,6 @@
 package com.maids.LMS.patron;
 
+import com.maids.LMS.borrowing.BorrowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -16,6 +17,8 @@ public class PatronService {
 
     @Autowired
     private PatronRepository patronRepository;
+    @Autowired
+    private BorrowingRepository borrowingRepository;
 
     @Cacheable
     public List<Patron> getAllPatrons() {
@@ -42,7 +45,9 @@ public class PatronService {
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found");
     }
 
+    @Transactional
     public void deletePatron(Long id) {
+        patronRepository.findById(id).ifPresent(book -> borrowingRepository.deleteByPatron(book));
         patronRepository.deleteById(id);
     }
 }

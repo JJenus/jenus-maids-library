@@ -43,7 +43,7 @@ public class Book {
     @NotNull(message = "Borrowed status cannot be null")
     private boolean borrowed;
 
-    @OneToMany( cascade = CascadeType.REMOVE, orphanRemoval = true) // Cascade type is set to ALL
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BorrowingRecord> borrowingRecords = new ArrayList<>();
 
     public Book(Long id, String title, String author, int publicationYear, String isbn, boolean borrowed) {

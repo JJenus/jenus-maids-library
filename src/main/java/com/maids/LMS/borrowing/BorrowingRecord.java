@@ -22,12 +22,10 @@ public class BorrowingRecord {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    // Many-to-one relationship with Book entity
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Book book;
 
-    // Many-to-one relationship with Patron entity
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Patron patron;
 
     private LocalDateTime borrowDate;

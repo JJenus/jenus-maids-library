@@ -1,5 +1,6 @@
 package com.maids.LMS.book;
 
+import com.maids.LMS.borrowing.BorrowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,6 +16,8 @@ import java.util.List;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private BorrowingRepository borrowingRepository;
 
     @Cacheable
     public List<Book> getAllBooks() {
@@ -41,7 +44,9 @@ public class BookService {
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found");
     }
 
+    @Transactional
     public void deleteBook(Long id) {
+        bookRepository.findById(id).ifPresent(book -> borrowingRepository.deleteByBook(book));
         bookRepository.deleteById(id);
     }
 }

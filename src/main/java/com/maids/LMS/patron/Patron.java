@@ -24,10 +24,10 @@ public class Patron {
     @NotBlank(message = "Name cannot be blank")
     @Length(max = 255, message = "Name is too long")
     private String name;
-    @NotBlank
+    @NotBlank(message = "Contact information cannot be blank")
     @Length(max = 255, message = "Contact information is too long")
     private String contactInformation;
-    @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true) // Cascade type is set to ALL
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BorrowingRecord> borrowingRecords = new ArrayList<>();
 
     public Patron(Long id, String name, String contactInformation) {

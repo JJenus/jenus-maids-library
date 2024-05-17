@@ -8,4 +8,8 @@ import java.util.Optional;
 
 public interface BorrowingRepository extends JpaRepository<BorrowingRecord, Long> {
     Optional<BorrowingRecord> findByBookAndPatron(Book book, Patron patron);
+
+    void deleteByBook(Book book);
+
+    void deleteByPatron(Patron book);
 }

@@ -45,9 +45,7 @@ public class PatronService {
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found");
     }
 
-    @Transactional
     public void deletePatron(Long id) {
-        patronRepository.findById(id).ifPresent(book -> borrowingRepository.deleteByPatron(book));
         patronRepository.deleteById(id);
     }
 }

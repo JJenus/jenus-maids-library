@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Title cannot be blank")
@@ -43,7 +43,7 @@ public class Book {
     @NotNull(message = "Borrowed status cannot be null")
     private boolean borrowed;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", targetEntity = BorrowingRecord.class, orphanRemoval = true)
     private List<BorrowingRecord> borrowingRecords = new ArrayList<>();
 
     public Book(Long id, String title, String author, int publicationYear, String isbn, boolean borrowed) {

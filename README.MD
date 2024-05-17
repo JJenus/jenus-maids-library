@@ -11,11 +11,11 @@
 1. **Clone the Repository (Optional)**:
    If you haven't already cloned the repository, you can do so by running the following command in your terminal or command prompt:
    ```bash
-   git clone <repository_url>
+   git clone https://github.com/JJenus/jenus-maids-library.git
 2. **Navigate to the Project Directory**:
    Change your current directory to the project directory:
    ```bash
-   cd <project_directory>
+   cd jenus-maids-library
 
 3. **Setting up the Database**:
    Before running the application, ensure that you have set up the database. You can follow these steps:

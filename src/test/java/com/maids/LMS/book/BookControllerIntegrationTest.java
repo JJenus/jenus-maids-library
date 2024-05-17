@@ -37,7 +37,6 @@ public class BookControllerIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        borrowingRepository.deleteAll();
         bookRepository.deleteAll();
     }
 

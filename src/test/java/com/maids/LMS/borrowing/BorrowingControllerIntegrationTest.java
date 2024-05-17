@@ -65,8 +65,6 @@ public class BorrowingControllerIntegrationTest {
 
         // Assertions
         assertNotNull(borrowingRecord);
-        assertEquals(book.getId(), borrowingRecord.getBook().getId());
-        assertEquals(patron.getId(), borrowingRecord.getPatron().getId());
         assertNotNull(borrowingRecord.getBorrowDate());
     }
 

@@ -1,6 +1,7 @@
 package com.maids.LMS.borrowing;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.maids.LMS.book.Book;
 import com.maids.LMS.patron.Patron;
 import jakarta.persistence.*;
@@ -23,9 +24,11 @@ public class BorrowingRecord {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Book book;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private Patron patron;
 
     private LocalDateTime borrowDate;

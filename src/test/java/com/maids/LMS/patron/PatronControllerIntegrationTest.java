@@ -36,7 +36,6 @@ public class PatronControllerIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        borrowingRepository.deleteAll();
         patronRepository.deleteAll();
     }
 

@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Patron {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank(message = "Name cannot be blank")
     @Length(max = 255, message = "Name is too long")
@@ -27,7 +27,7 @@ public class Patron {
     @NotBlank(message = "Contact information cannot be blank")
     @Length(max = 255, message = "Contact information is too long")
     private String contactInformation;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "patron", targetEntity = BorrowingRecord.class, orphanRemoval = true)
     private List<BorrowingRecord> borrowingRecords = new ArrayList<>();
 
     public Patron(Long id, String name, String contactInformation) {

@@ -51,10 +51,11 @@ public class BorrowingService {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Book is not borrowed");
         }
 
-        BorrowingRecord borrowingRecord = borrowingRepository.findByBookAndPatron(book, patron)
+        BorrowingRecord borrowingRecord = borrowingRepository.findByBookAndPatronAndReturnDateIsNull(book, patron)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Borrowing record not found"));
 
         borrowingRecord.setReturnDate(LocalDateTime.now());
+        System.out.println("ID: "+borrowingRecord.getId());
         borrowingRepository.save(borrowingRecord);
 
         book.setBorrowed(false);

@@ -44,9 +44,7 @@ public class BookService {
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found");
     }
 
-    @Transactional
     public void deleteBook(Long id) {
-        bookRepository.findById(id).ifPresent(book -> borrowingRepository.deleteByBook(book));
         bookRepository.deleteById(id);
     }
 }

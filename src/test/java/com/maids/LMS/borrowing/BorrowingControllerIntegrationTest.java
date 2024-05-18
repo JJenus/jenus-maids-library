@@ -96,7 +96,7 @@ public class BorrowingControllerIntegrationTest {
         // Populate test data
         Book book = bookRepository.save(new Book(null, "Returnable Book", "Author", 2023, "ISBN-12345", true));
         Patron patron = patronRepository.save(new Patron(null, "John Doe", "john@example.com"));
-        BorrowingRecord borrowingRecord = borrowingRepository.save(new BorrowingRecord(null, book, patron, LocalDateTime.now(), null));
+        BorrowingRecord borrowingRecord = borrowingRepository.save(new BorrowingRecord(null, book.getId(), patron.getId(), LocalDateTime.now(), null));
 
         // Send PUT request
         mockMvc.perform(MockMvcRequestBuilders.put("/api/return/{bookId}/patron/{patronId}", book.getId(), patron.getId())

@@ -34,7 +34,7 @@ public class BorrowingService {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Book is already borrowed");
         }
 
-        BorrowingRecord borrowing = new BorrowingRecord(book, patron);
+        BorrowingRecord borrowing = new BorrowingRecord(bookId, patronId);
         borrowingRepository.save(borrowing);
         book.setBorrowed(true);
         bookRepository.save(book);
@@ -44,14 +44,14 @@ public class BorrowingService {
     public void returnBook(Long bookId, Long patronId) {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found"));
-        Patron patron = patronRepository.findById(patronId)
+        patronRepository.findById(patronId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Patron not found"));
 
         if (!book.isBorrowed()) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Book is not borrowed");
         }
 
-        BorrowingRecord borrowingRecord = borrowingRepository.findByBookAndPatronAndReturnDateIsNull(book, patron)
+        BorrowingRecord borrowingRecord = borrowingRepository.findByBookIdAndPatronIdAndReturnDateIsNull(bookId, patronId)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Borrowing record not found"));
 
         borrowingRecord.setReturnDate(LocalDateTime.now());

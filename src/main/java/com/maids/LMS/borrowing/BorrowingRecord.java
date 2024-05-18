@@ -23,20 +23,15 @@ public class BorrowingRecord {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Book book;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
-    private Patron patron;
+    private Long bookId;
+    private Long patronId;
 
     private LocalDateTime borrowDate;
     private LocalDateTime returnDate;
 
-    public BorrowingRecord(Book book, Patron patron) {
-        this.book = book;
-        this.patron = patron;
+    public BorrowingRecord(Long book, Long patron) {
+        this.bookId = book;
+        this.patronId = patron;
     }
 
     @PrePersist

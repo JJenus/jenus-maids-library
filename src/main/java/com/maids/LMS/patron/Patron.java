@@ -27,7 +27,7 @@ public class Patron {
     @NotBlank(message = "Contact information cannot be blank")
     @Length(max = 255, message = "Contact information is too long")
     private String contactInformation;
-    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "patron", targetEntity = BorrowingRecord.class, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,  mappedBy = "patronId", targetEntity = BorrowingRecord.class, orphanRemoval = true)
     private List<BorrowingRecord> borrowingRecords = new ArrayList<>();
 
     public Patron(Long id, String name, String contactInformation) {

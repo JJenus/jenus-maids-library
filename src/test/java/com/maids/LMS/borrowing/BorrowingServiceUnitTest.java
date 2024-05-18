@@ -45,8 +45,8 @@ public class BorrowingServiceUnitTest {
 
         // Assertions
         assertNotNull(result);
-        assertEquals(bookId, result.getBook().getId());
-        assertEquals(patronId, result.getPatron().getId());
+        assertEquals(bookId, result.getBookId());
+        assertEquals(patronId, result.getPatronId());
     }
 
     @Test
@@ -100,12 +100,12 @@ public class BorrowingServiceUnitTest {
         Long patronId = 1L;
         Book book = new Book(1L, "Absolute Java", "Walter Savitch", 1998, "ISBN 89784038", true);
         Patron patron = new Patron(1L, "Super Man", "s.p@example.com");
-        BorrowingRecord borrowing = new BorrowingRecord(book, patron);
+        BorrowingRecord borrowing = new BorrowingRecord(bookId, patronId);
 
         // Define behavior of mocks
         when(bookRepository.findById(bookId)).thenReturn(Optional.of(book));
         when(patronRepository.findById(patronId)).thenReturn(Optional.of(patron));
-        when(borrowingRepository.findByBookAndPatronAndReturnDateIsNull(book, patron)).thenReturn(Optional.of(borrowing));
+        when(borrowingRepository.findByBookIdAndPatronIdAndReturnDateIsNull(bookId, patronId)).thenReturn(Optional.of(borrowing));
 
         // Test the service method
         assertDoesNotThrow(() -> borrowingService.returnBook(bookId, patronId));

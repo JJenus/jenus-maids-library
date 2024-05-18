@@ -1,9 +1,7 @@
 package com.maids.LMS.book;
 
-import com.maids.LMS.borrowing.BorrowingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,26 +14,28 @@ import java.util.List;
 public class BookService {
     @Autowired
     private BookRepository bookRepository;
-    @Autowired
-    private BorrowingRepository borrowingRepository;
 
-    @Cacheable
+    @Cacheable(key = "'allBooks'")
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    @Cacheable
+    @Cacheable(key = "#id")
     public Book getBookById(Long id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found"));
     }
 
     @Transactional
+    @CachePut(key = "#result.id")
+    @CacheEvict(key = "'allBooks'")  // Clears all cache entries for books to reflect changes
     public Book addBook(Book book) {
         return bookRepository.save(book);
     }
 
     @Transactional
+    @CachePut(key = "#id")
+    @CacheEvict(key = "'allBooks'")
     public Book updateBook(Long id, Book updatedBook) {
         if (bookRepository.existsById(id)) {
             updatedBook.setId(id);
@@ -44,6 +44,11 @@ public class BookService {
         throw new HttpClientErrorException(HttpStatus.NOT_FOUND, "Book not found");
     }
 
+    @Transactional
+    @Caching(evict = {
+            @CacheEvict(key = "#id"),
+            @CacheEvict(key = "'allBooks'")
+    })
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
     }
